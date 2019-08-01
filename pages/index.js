@@ -4,6 +4,7 @@ const Index = () => {
   return (
     <div>
       <h1>Alchemy Webform Builder</h1>
+      <Form />
     </div>
   );
 };
