@@ -6,8 +6,7 @@ const FormItem = Form.Item
 interface FormValues {
   email: string
   password: string
-  remember: boolean
-  checkbox: boolean
+  rememberMe: boolean
 }
 
 interface Props {
@@ -54,9 +53,9 @@ class FormComponent extends React.PureComponent<
           </FormItem>
           <FormItem>
             <Checkbox
-              name="checkbox"
+              name="rememberMe"
               onChange={handleChange}
-              checked={values.checkbox}
+              checked={values.rememberMe}
             >
               Remember me
             </Checkbox>
@@ -86,8 +85,7 @@ export const QuestionForm = withFormik<Props, FormValues>({
   mapPropsToValues: () => ({
     email: "",
     password: "",
-    remember: false,
-    checkbox: true
+    rememberMe: false
   }),
   handleSubmit: async (values, { props, setErrors }) => {
     const errors = await props.submit(values)
