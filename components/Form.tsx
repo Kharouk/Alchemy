@@ -1,68 +1,99 @@
 import React from "react"
-import { Formik } from "formik"
+import { Form, Icon, Input, Button, Checkbox } from "antd"
+import { withFormik, FormikErrors, FormikProps } from "formik"
+const FormItem = Form.Item
 
-const Form = () => (
-  <div>
-    <h1>Form Creator</h1>
-    <Formik
-      initialValues={{ email: "", password: "" }}
-      validate={values => {
-        let errors = { email: "", password: "" }
-        if (!values.email) {
-          errors.email = "Required"
-        } else if (
-          !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-        ) {
-          errors.email = "Invalid email address"
-        }
+interface FormValues {
+  email: string
+  password: string
+  remember: boolean
+  checkbox: boolean
+}
 
-        if (!values.password) {
-          errors.password = "Required"
-        }
-        return errors
-      }}
-      onSubmit={(values, { setSubmitting }) => {
-        setTimeout(() => {
-          alert(JSON.stringify(values, null, 2))
-          setSubmitting(false)
-        }, 400)
-      }}
-    >
-      {({
-        values,
-        errors,
-        touched,
-        handleChange,
-        handleBlur,
-        handleSubmit,
-        isSubmitting
-      }) => (
-        <form onSubmit={handleSubmit}>
-          <input
-            type="email"
-            name="email"
-            onChange={handleChange}
-            onBlur={handleBlur}
-            value={values.email}
-          />
-          {errors.email && touched.email && errors.email}
-          <input
-            type="password"
-            name="password"
-            onChange={handleChange}
-            onBlur={handleBlur}
-            value={values.password}
-          />
-          {errors.password && touched.password && errors.password}
-          <button type="submit" disabled={isSubmitting}>
-            Submit
-          </button>
-        </form>
-      )}
-    </Formik>
-  </div>
-)
+interface Props {
+  submit: (values: FormValues) => Promise<FormikErrors<FormValues> | null>
+}
 
-// https://jaredpalmer.com/formik/docs/overview
+class FormComponent extends React.PureComponent<
+  FormikProps<FormValues> & Props
+> {
+  render() {
+    const { values, handleChange, handleBlur, handleSubmit } = this.props
+    return (
+      <form
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
+        }}
+        onSubmit={handleSubmit}
+      >
+        <div style={{ maxWidth: "700px" }}>
+          <h2>Create your Form.</h2>
+          <FormItem>
+            <Input
+              prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
+              name="email"
+              placeholder="Email"
+              value={values.email}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              autoComplete=""
+            />
+          </FormItem>
+          <FormItem>
+            <Input
+              prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={values.password}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+          </FormItem>
+          <FormItem>
+            <Checkbox
+              name="checkbox"
+              onChange={handleChange}
+              checked={values.checkbox}
+            >
+              Remember me
+            </Checkbox>
+          </FormItem>
+          <FormItem>
+            <a className="login-form-forgot" href="">
+              Forgot password
+            </a>
+          </FormItem>
+          <FormItem>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="login-form-button"
+            >
+              Log in
+            </Button>
+            Or <a href="">register now!</a>
+          </FormItem>
+        </div>
+      </form>
+    )
+  }
+}
 
-export default Form
+export const QuestionForm = withFormik<Props, FormValues>({
+  mapPropsToValues: () => ({
+    email: "",
+    password: "",
+    remember: false,
+    checkbox: true
+  }),
+  handleSubmit: async (values, { props, setErrors }) => {
+    const errors = await props.submit(values)
+
+    if (errors) {
+      setErrors(errors)
+    }
+  }
+})(FormComponent)
