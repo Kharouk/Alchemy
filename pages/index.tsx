@@ -1,10 +1,16 @@
 import React from "react"
-import Form from "../components/Form"
+import { QuestionForm } from "../components/Form"
+
 const Home = () => {
+  const fakeSubmit = async (values: any) => {
+    console.log(values)
+    return null
+  }
+
   return (
     <div className="example">
       <h1>Alchemy Webform Builder</h1>
-      <Form />
+      <QuestionForm submit={fakeSubmit} />
     </div>
   )
 }
