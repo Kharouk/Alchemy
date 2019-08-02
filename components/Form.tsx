@@ -54,9 +54,9 @@ const Form = () => (
             value={values.password}
           />
           {errors.password && touched.password && errors.password}
-          <button type="submit" disabled={isSubmitting}>
+          <Button type="primary" disabled={isSubmitting}>
             Submit
-          </button>
+          </Button>
         </form>
       )}
     </Formik>

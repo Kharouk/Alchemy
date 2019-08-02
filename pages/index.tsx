@@ -1,13 +1,14 @@
 import React from "react"
 import Form from "../components/Form"
+import "./style.css"
 
-const Index = () => {
+const Home = () => {
   return (
-    <div>
+    <div className="example">
       <h1>Alchemy Webform Builder</h1>
       <Form />
     </div>
   )
 }
 
-export default Index
+export default Home
