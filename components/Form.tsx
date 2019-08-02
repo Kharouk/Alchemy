@@ -2,8 +2,17 @@ import React from "react"
 import { Form, Icon, Input, Button, Checkbox } from "antd"
 import { withFormik, FormikErrors, FormikProps } from "formik"
 import { loginValidationSchema } from "../schemas/formSchema"
+import styled from "styled-components"
 
 const FormItem = Form.Item
+
+const Wrapper = styled.div`
+  max-width: 700px;
+
+  .ant-form-explain {
+    color: #9f4000;
+  }
+`
 
 interface FormValues {
   email: string
@@ -36,7 +45,7 @@ class FormComponent extends React.PureComponent<
         }}
         onSubmit={handleSubmit}
       >
-        <div style={{ maxWidth: "700px" }}>
+        <Wrapper>
           <h2>Create your Form.</h2>
           <FormItem help={touched.email && errors.email ? errors.email : null}>
             <Input
@@ -85,7 +94,7 @@ class FormComponent extends React.PureComponent<
             </Button>
             Or <a href="">register now!</a>
           </FormItem>
-        </div>
+        </Wrapper>
       </form>
     )
   }
