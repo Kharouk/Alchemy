@@ -8,10 +8,6 @@ const FormItem = Form.Item
 
 const Wrapper = styled.div`
   max-width: 700px;
-
-  .ant-form-explain {
-    color: #9f4000;
-  }
 `
 
 interface FormValues {
@@ -47,7 +43,10 @@ class FormComponent extends React.PureComponent<
       >
         <Wrapper>
           <h2>Create your Form.</h2>
-          <FormItem help={touched.email && errors.email ? errors.email : null}>
+          <FormItem
+            validateStatus={touched.email && errors.email ? "error" : undefined}
+            help={touched.email && errors.email ? errors.email : null}
+          >
             <Input
               prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
               name="email"
@@ -58,6 +57,9 @@ class FormComponent extends React.PureComponent<
             />
           </FormItem>
           <FormItem
+            validateStatus={
+              touched.password && errors.password ? "error" : undefined
+            }
             help={touched.password && errors.password ? errors.password : null}
           >
             <Input
@@ -102,6 +104,7 @@ class FormComponent extends React.PureComponent<
 
 export const QuestionForm = withFormik<Props, FormValues>({
   validationSchema: loginValidationSchema,
+  // validateOnChange: false,
   mapPropsToValues: () => ({
     email: "",
     password: "",
