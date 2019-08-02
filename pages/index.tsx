@@ -1,7 +1,5 @@
 import React from "react"
 import Form from "../components/Form"
-import "./style.css"
-
 const Home = () => {
   return (
     <div className="example">
