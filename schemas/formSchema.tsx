@@ -1,5 +1,12 @@
-import yup from "yup"
+import * as yup from "yup"
 
-const loginSchema = yup.object().shape({
-  email: yup
+import {
+  registerPasswordValidation,
+  registerEmailValidation
+} from "./utils/yupSchemas"
+
+export const loginValidationSchema = yup.object().shape({
+  email: registerEmailValidation,
+  password: registerPasswordValidation,
+  rememberMe: yup.bool().default(false)
 })

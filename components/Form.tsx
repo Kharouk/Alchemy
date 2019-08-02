@@ -1,6 +1,8 @@
 import React from "react"
 import { Form, Icon, Input, Button, Checkbox } from "antd"
 import { withFormik, FormikErrors, FormikProps } from "formik"
+import { loginValidationSchema } from "../schemas/formSchema"
+
 const FormItem = Form.Item
 
 interface FormValues {
@@ -17,7 +19,14 @@ class FormComponent extends React.PureComponent<
   FormikProps<FormValues> & Props
 > {
   render() {
-    const { values, handleChange, handleBlur, handleSubmit } = this.props
+    const {
+      values,
+      handleChange,
+      handleBlur,
+      handleSubmit,
+      touched,
+      errors
+    } = this.props
     return (
       <form
         style={{
@@ -29,7 +38,7 @@ class FormComponent extends React.PureComponent<
       >
         <div style={{ maxWidth: "700px" }}>
           <h2>Create your Form.</h2>
-          <FormItem>
+          <FormItem help={touched.email && errors.email ? errors.email : null}>
             <Input
               prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
               name="email"
@@ -37,10 +46,11 @@ class FormComponent extends React.PureComponent<
               value={values.email}
               onChange={handleChange}
               onBlur={handleBlur}
-              autoComplete=""
             />
           </FormItem>
-          <FormItem>
+          <FormItem
+            help={touched.password && errors.password ? errors.password : null}
+          >
             <Input
               prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
               type="password"
@@ -82,6 +92,7 @@ class FormComponent extends React.PureComponent<
 }
 
 export const QuestionForm = withFormik<Props, FormValues>({
+  validationSchema: loginValidationSchema,
   mapPropsToValues: () => ({
     email: "",
     password: "",
